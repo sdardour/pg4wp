@@ -1,7 +1,6 @@
 ﻿
 var path,
     game,
-    platforms,
     player,
     cursors;
 
@@ -22,7 +21,7 @@ jQuery(document).ready(function () {
         physics: {
             default: "arcade",
             arcade: {
-                gravity: { y: 300 },
+                gravity: { y: 150 },
                 debug: false
             }
         },
@@ -39,7 +38,6 @@ class mainScene {
         // It will load all the assets, like sprites and sounds
 
         this.load.image("sky", path + "media/sky.png");
-        this.load.image("ground", path + "media/platform.png");
         this.load.spritesheet("sprite",
             path + "media/sprite.png",
             { frameWidth: 32, frameHeight: 48 }
@@ -54,15 +52,7 @@ class mainScene {
 
         this.add.image(320, 240, "sky");
 
-        platforms = this.physics.add.staticGroup();
-
-        platforms.create(320, 460, "ground");
-
-        platforms.create(320 + (640 - 300), 300, "ground");
-        platforms.create(320 - (640 - 200), 220, "ground");
-        platforms.create(320 + (640 - 100), 140, "ground");
-
-        player = this.physics.add.sprite(48, 480 - 40 - 24 - 48, "sprite");
+        player = this.physics.add.sprite(48, 48, "sprite");
 
         player.setBounce(0.2);
         player.setCollideWorldBounds(true);
@@ -87,8 +77,6 @@ class mainScene {
             repeat: -1
         });
 
-        this.physics.add.collider(player, platforms);
-
         cursors = this.input.keyboard.createCursorKeys();
 
     }
@@ -99,11 +87,11 @@ class mainScene {
         // It will handle all the game"s logic, like movements
 
         if (cursors.left.isDown) {
-            player.setVelocityX(-160);
+            player.setVelocityX(-150);
             player.anims.play("left", true);
         }
         else if (cursors.right.isDown) {
-            player.setVelocityX(160);
+            player.setVelocityX(+150);
             player.anims.play("right", true);
         }
         else {
@@ -111,8 +99,8 @@ class mainScene {
             player.anims.play("turn");
         }
 
-        if (cursors.up.isDown && player.body.touching.down) {
-            player.setVelocityY(-330);
+        if (cursors.up.isDown) {
+            player.setVelocityY(-150);
         }
 
     }
